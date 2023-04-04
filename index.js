@@ -10,7 +10,7 @@ const GPT_MODE = process.env.GPT_MODE
 let file_context = "You are a helpful Twitch Chatbot."
 
 const messages = [
-  {role: "streamer", content: "Personifica o streamer."}
+  {role: "assistant", content: "Personifica o streamer."}
 ];
 
 console.log("GPT_MODE is " + GPT_MODE)
