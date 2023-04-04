@@ -253,7 +253,7 @@ app.get('/gpt/:text', async (req, res) => {
       if (response.data.choices) {
         console.log ("Agent answer: " + response.data.choices[0].message.content)
         messages.push({role: "assistant", content: response.data.choices[0].message.content})
-        res.send(response.data.choices[0].message.content)
+        res.send(response.data.choices[0].message.content.slice(0, 399))
       } else {
         res.send("Something went wrong. Try again later!")
       }
@@ -274,7 +274,7 @@ app.get('/gpt/:text', async (req, res) => {
       });
       if (response.data.choices) {
           console.log ("Agent answer: " + response.data.choices[0].text)
-          res.send(response.data.choices[0].text)
+          res.send(response.data.choices[0].text.slice(0, 399))
       } else {
           res.send("Something went wrong. Try again later!")
       }
