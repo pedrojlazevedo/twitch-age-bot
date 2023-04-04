@@ -10,8 +10,9 @@ const GPT_MODE = process.env.GPT_MODE
 let file_context = "You are a helpful Twitch Chatbot."
 
 const messages = [
-  {role: "system", content: "You are a helpful Twitch Chatbot."}
+  {role: "streamer", content: "Personifica o streamer."}
 ];
+
 console.log("GPT_MODE is " + GPT_MODE)
 console.log("History length is " + process.env.HISTORY_LENGTH)
 console.log("OpenAI API Key:" + process.env.OPENAI_API_KEY)
@@ -242,8 +243,8 @@ app.get('/gpt/:text', async (req, res) => {
       const response = await openai.createChatCompletion({
         model: "gpt-3.5-turbo",
         messages: messages,
-        temperature: 0.5,
-        max_tokens: 128,
+        temperature: 1,
+        max_tokens: 124,
         top_p: 1,
         frequency_penalty: 0,
         presence_penalty: 0,
