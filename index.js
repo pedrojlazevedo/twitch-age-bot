@@ -62,6 +62,7 @@ app.all('/top/br', (req, res) => {
             return res.send("Something went wrong! HEEEEELP");
         }
       let body = response.body;
+      console.log(body);
       all_players = all_players.concat(body.players);
       page = page + 1;
     })
