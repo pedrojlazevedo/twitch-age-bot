@@ -62,12 +62,19 @@ app.all('/top/br', (req, res) => {
             return res.send("Something went wrong! HEEEEELP");
         }
       let body = response.body;
-      console.log(body);
+      console.log(body.players);
       all_players = all_players.concat(body.players);
       page = page + 1;
     })
   }
-  res.send(all_players);
+  
+  let message = ""
+  for (let i = 0; i < all_players.lenght; i++) {
+      if (all_players[i].country == "br") {
+          message = message + str(i+1) + ". " + all_players[i].name + " - " + all_players[i].rating
+      }
+  }
+  res.send(message);
 })
 
 app.get('/rank/:name', (req, res) => {
