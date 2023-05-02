@@ -49,6 +49,23 @@ app.all('/rank', (req, res) => {
     res.send("Perfect <3")
 })
 
+app.all('/top/br', (req, res) => {
+  let page = 1;
+  const n_pages = 4;
+  let all_players = [];
+  for (let i = 0; i < n_pages; i++) {
+    request.get({
+          url: "https://aoe4world.com/api/v0/leaderboards/rm_solo?page=" + page ,
+          json: true
+      }, (error, response) => {
+      let body = response.body;
+      all_players = all_players.concat(body["players"]);
+      page = page + 1;
+    })
+  }
+  res.send(all_players);
+})
+
 app.get('/rank/:name', (req, res) => {
     const player_name = req.params.name
 
