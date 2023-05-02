@@ -58,8 +58,11 @@ app.all('/top/br', (req, res) => {
           url: "https://aoe4world.com/api/v0/leaderboards/rm_solo?page=" + page ,
           json: true
       }, (error, response) => {
+        if (error) {
+            return res.send("Something went wrong! HEEEEELP");
+        }
       let body = response.body;
-      all_players = all_players.concat(body["players"]);
+      all_players = all_players.concat(body.players);
       page = page + 1;
     })
   }
