@@ -49,6 +49,24 @@ app.all('/rank', (req, res) => {
     res.send("Perfect <3")
 })
 
+function get_based_data(current, page){
+	request({
+		url: "https://aoe4world.com/api/v0/leaderboards/rm_solo?page=" + String(page),
+		method: "GET",
+		json:true,
+		headers:[{'content-type': 'application/json'}]
+	}, function (error, response, body){
+		if(!error & response.statusCode === 200){
+			console.log("After request: " + String(page));
+			let body = response.body;
+			console.log("Players size: " + body.players.length);
+			all_players.push(body.players);
+		} else {
+			console.log("google API failed!: ");
+		}
+	}); 
+}
+
 app.all('/top/br', (req, res) => {
 	let page = 1;
 	const n_pages = 3;
@@ -56,24 +74,8 @@ app.all('/top/br', (req, res) => {
 	console.log("Hello");
 	for (let i = 0; i < n_pages; i++) {
 		console.log("Before request: " + String(i));
-		
-		request({
-			url: "https://aoe4world.com/api/v0/leaderboards/rm_solo?page=" + String(page),
-			method: "GET",
-			json:true,
-			headers:[{'content-type': 'application/json'}]
-		}, function (error, response, body){
-			if(!error & response.statusCode === 200){
-				console.log("After request: " + String(i));
-				let body = response.body;
-				console.log("Players size: " + body.players.length);
-				all_players.push(body.players);
-				page = page + 1;
-			} else {
-				console.log("google API failed!: ");
-				return;
-			}
-		}); 
+		get_based_data(all_players, page);
+		page = page + 1;
 		
 		/*
 		request.get({
