@@ -49,7 +49,7 @@ app.all('/rank', (req, res) => {
     res.send("Perfect <3")
 })
 
-function get_based_data(page){
+async function get_based_data(page){
 	/*
 	request({
 		url: "https://aoe4world.com/api/v0/leaderboards/rm_solo?page=" + String(page),
@@ -84,14 +84,14 @@ function get_based_data(page){
 	
 }
 
-app.all('/top/br', (req, res) => {
+app.all('/top/br', async (req, res) => {
 	let page = 1;
 	const n_pages = 3;
 	let all_players = [];
 	console.log("Hello");
 	for (let i = 0; i < n_pages; i++) {
 		console.log("Before request: " + String(i));
-		let players = get_based_data(all_players, page);
+		let players = await get_based_data(all_players, page);
 		page = page + 1;
 		all_players = all_players.concat(players);
 		
