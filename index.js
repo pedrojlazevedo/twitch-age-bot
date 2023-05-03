@@ -50,6 +50,7 @@ app.all('/rank', (req, res) => {
 })
 
 function get_based_data(all_players, page){
+	/*
 	request({
 		url: "https://aoe4world.com/api/v0/leaderboards/rm_solo?page=" + String(page),
 		method: "GET",
@@ -64,7 +65,22 @@ function get_based_data(all_players, page){
 		} else {
 			console.log("google API failed!: ");
 		}
-	}); 
+	});
+	*/
+	request.get({
+		url: "https://aoe4world.com/api/v0/leaderboards/rm_solo?page=" + String(page),
+		json: true
+	}, (error, response) => {
+		if (error) {
+			return res.send("Something went wrong! HEEEEELP");
+		}
+		console.log("After request: " + String(i));
+		let body = response.body;
+		console.log("Players size: " + body.players.length);
+		all_players.push(body.players);
+		console.log("All Players size: " + all_players.length);
+		page = page + 1;
+	})
 }
 
 app.all('/top/br', async (req, res) => {
