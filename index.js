@@ -80,7 +80,6 @@ function get_based_data(page){
 		console.log("Players size: " + body.players.length);
 		players = body.players
 		console.log("All Players size: " + all_players.length);
-		page = page + 1;
 	})
 	return players
 }
