@@ -51,11 +51,13 @@ app.all('/rank', (req, res) => {
 
 app.all('/top/br', (req, res) => {
   let page = 1;
-  const n_pages = 4;
+  const n_pages = 3;
   let all_players = [];
+  console.log("Hello");
   for (let i = 0; i < n_pages; i++) {
+    console.log("Before request: " + str(i))
     request.get({
-          url: "https://aoe4world.com/api/v0/leaderboards/rm_solo?page=" + page ,
+          url: "https://aoe4world.com/api/v0/leaderboards/rm_solo?page=" + page,
           json: true
       }, (error, response) => {
         if (error) {
@@ -74,6 +76,7 @@ app.all('/top/br', (req, res) => {
           message = message + str(i+1) + ". " + all_players[i].name + " - " + all_players[i].rating
       }
   }
+  console.log(message);
   res.send(message);
 })
 
