@@ -66,6 +66,9 @@ async function get_based_data(page){
 			console.log("google API failed!: ");
 		}
 	});
+	return new Promise((res) => {
+		setTimeout(res, ms)
+	})
 	*/
 	request.get({
 		url: "https://aoe4world.com/api/v0/leaderboards/rm_solo?page=" + String(page),
@@ -82,6 +85,7 @@ async function get_based_data(page){
 		return players
 	})
 	
+	
 }
 
 app.all('/top/br', async (req, res) => {
@@ -91,7 +95,27 @@ app.all('/top/br', async (req, res) => {
 	console.log("Hello");
 	for (let i = 0; i < n_pages; i++) {
 		console.log("Before request: " + String(i));
-		let players = await get_based_data(all_players, page);
+		
+		let players = new Promise(
+			function get_based_data(page){
+				request.get({
+					url: "https://aoe4world.com/api/v0/leaderboards/rm_solo?page=" + String(page),
+					json: true
+				}, (error, response) => {
+					if (error) {
+						return res.send("Something went wrong! HEEEEELP");
+					}
+					console.log("After request: " + String(page));
+					let body = response.body;
+					console.log("Players size: " + body.players.length);
+					let players = body.players
+					console.log("All Players size: " + all_players.length);
+					return players
+				})	
+			}
+		); 
+		//await get_based_data(all_players, page);
+		
 		page = page + 1;
 		all_players = all_players.concat(players);
 		
