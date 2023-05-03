@@ -49,12 +49,42 @@ app.all('/rank', (req, res) => {
     res.send("Perfect <3")
 })
 
- 
+app.all('/top/br', async (req, res) => {
+	let page = 1;
+	const n_pages = 3;
+	let all_players = [];
+	console.log("Hello");
+	for (let i = 0; i < n_pages; i++) {
+		console.log("Before request: " + String(i));
+		await request.get({
+			url: "https://aoe4world.com/api/v0/leaderboards/rm_solo?page=" + String(page),
+			json: true
+		}, (error, response) => {
+			if (error) {
+				return res.send("Something went wrong! HEEEEELP");
+			}
+			console.log("After request: " + String(i));
+			let body = response.body;
+			console.log("Players size: " + body.players.length);
+			all_players = all_players.concat(body.players);
+			page = page + 1;
+		})
+	}
+
+	let message = ""
+	for (let i = 0; i < all_players.length; i++) {
+	  if (all_players[i].country == "br") {
+		  message = message + String(i+1) + ". " + all_players[i].name + " - " + all_players[i].rating
+	  }
+	}
+	console.log(message);
+	res.send(message);
+})
 
 app.get('/rank/:name', (req, res) => {
     const player_name = req.params.name
 
-    await request.get({
+    request.get({
         url: "https://aoe4world.com/api/v0/players/search?query=" + player_name ,
         json: true
     }, (error, response) => {
