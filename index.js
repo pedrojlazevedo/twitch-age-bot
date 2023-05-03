@@ -74,7 +74,7 @@ function get_based_data(all_players, page){
 		if (error) {
 			return res.send("Something went wrong! HEEEEELP");
 		}
-		console.log("After request: " + String(i));
+		console.log("After request: " + String(page));
 		let body = response.body;
 		console.log("Players size: " + body.players.length);
 		all_players.push(body.players);
