@@ -49,7 +49,7 @@ app.all('/rank', (req, res) => {
     res.send("Perfect <3")
 })
 
-function get_based_data(current, page){
+function get_based_data(all_players, page){
 	request({
 		url: "https://aoe4world.com/api/v0/leaderboards/rm_solo?page=" + String(page),
 		method: "GET",
