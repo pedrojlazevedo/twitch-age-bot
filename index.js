@@ -49,6 +49,39 @@ app.all('/rank', (req, res) => {
     res.send("Perfect <3")
 })
 
+function parse(page){
+    return new Promise(function(resolve, reject){
+	
+	request.get({
+		url: "https://aoe4world.com/api/v0/leaderboards/rm_solo?page=" + String(page),
+		json: true
+	}, (error, response) => {
+		if (error) {
+			return res.send("Something went wrong! HEEEEELP");
+		}
+		console.log("After request: " + String(page));
+		let body = response.body;
+		console.log("Players size: " + body.players.length);
+		let players = body.players
+		console.log("All Players size: " + all_players.length);
+		resolve(players);
+	})
+	/*
+        request('https://bitskins.com/api/v1/get_account_balance/?api_key='+api+'&code='+code, function (error, response, body) {
+            // in addition to parsing the value, deal with possible errors
+            if (err) return reject(err);
+            try {
+                // JSON.parse() can throw an exception if not valid JSON
+                resolve(JSON.parse(body).data.available_balance);
+            } catch(e) {
+                reject(e);
+            }
+        });
+	*/
+	    
+    });
+}
+
 async function get_based_data(page){
 	/*
 	request({
@@ -96,25 +129,13 @@ app.all('/top/br', async (req, res) => {
 	for (let i = 0; i < n_pages; i++) {
 		console.log("Before request: " + String(i));
 		
-		let players = new Promise(
-			function get_based_data(page){
-				request.get({
-					url: "https://aoe4world.com/api/v0/leaderboards/rm_solo?page=" + String(page),
-					json: true
-				}, (error, response) => {
-					if (error) {
-						return res.send("Something went wrong! HEEEEELP");
-					}
-					console.log("After request: " + String(page));
-					let body = response.body;
-					console.log("Players size: " + body.players.length);
-					let players = body.players
-					console.log("All Players size: " + all_players.length);
-					return players
-				})	
-			}
-		); 
-		//await get_based_data(all_players, page);
+		let players
+		parse(page).then(function(val) {
+			console.log("asdasd");
+		    players = val;
+		}).catch(function(err) {
+		    console.err(err);
+		});
 		
 		page = page + 1;
 		all_players = all_players.concat(players);
