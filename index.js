@@ -66,12 +66,13 @@ app.all('/top/br', async (req, res) => {
 			console.log("After request: " + String(i));
 			let body = response.body;
 			console.log("Players size: " + body.players.length);
-			all_players = all_players.concat(body.players);
+			all_players.push(body.players);
 			page = page + 1;
 		})
 	}
-
-	let message = ""
+	console.log("Finished loop");
+	console.log(all_players);
+	let message = "";
 	for (let i = 0; i < all_players.length; i++) {
 	  if (all_players[i].country == "br") {
 		  message = message + String(i+1) + ". " + all_players[i].name + " - " + all_players[i].rating
