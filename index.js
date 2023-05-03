@@ -67,7 +67,6 @@ function get_based_data(page){
 		}
 	});
 	*/
-	let players
 	request.get({
 		url: "https://aoe4world.com/api/v0/leaderboards/rm_solo?page=" + String(page),
 		json: true
@@ -78,10 +77,11 @@ function get_based_data(page){
 		console.log("After request: " + String(page));
 		let body = response.body;
 		console.log("Players size: " + body.players.length);
-		players = body.players
+		let players = body.players
 		console.log("All Players size: " + all_players.length);
+		return players
 	})
-	return players
+	
 }
 
 app.all('/top/br', async (req, res) => {
@@ -91,7 +91,7 @@ app.all('/top/br', async (req, res) => {
 	console.log("Hello");
 	for (let i = 0; i < n_pages; i++) {
 		console.log("Before request: " + String(i));
-		players = await get_based_data(all_players, page);
+		let players = await get_based_data(all_players, page);
 		page = page + 1;
 		all_players = all_players.concat(players);
 		
@@ -112,9 +112,10 @@ app.all('/top/br', async (req, res) => {
 		*/
 	}
 	console.log("Finished loop");
-	console.log(all_players);
+	console.log(all_players.length);
 	let message = "";
 	for (let i = 0; i < all_players.length; i++) {
+	  console.log(all_players[i])
 	  if (all_players[i].country == "br") {
 		  message = message + String(i+1) + ". " + all_players[i].name + " - " + all_players[i].rating
 	  }
