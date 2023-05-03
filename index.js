@@ -77,7 +77,7 @@ function get_based_data(all_players, page){
 		console.log("After request: " + String(page));
 		let body = response.body;
 		console.log("Players size: " + body.players.length);
-		all_players.push(body.players);
+		all_players = all_players.concat(body.players);
 		console.log("All Players size: " + all_players.length);
 		page = page + 1;
 	})
